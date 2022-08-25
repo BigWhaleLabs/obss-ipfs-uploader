@@ -26,7 +26,7 @@ services:
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
-    command: 'caddy reverse-proxy --from ${DOMAIN:-localhost} --to http://backend:1337'
+    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend:1337'
     ports:
       - 80:80
       - 443:443
@@ -35,6 +35,8 @@ services:
       - caddy_conf:/config
     depends_on:
       - backend
+    profiles:
+      - production
 volumes:
   ipfs_data:
   caddy_data:
