@@ -12,10 +12,10 @@ And you should be good to go! Feel free to fork and submit pull requests.
 
 ## Environment variables
 
-| Name          | Description                                                                       |
-| ------------- | --------------------------------------------------------------------------------- |
-| `DOMAIN`      | Domain name for certbot, assumes that the environment is production when provided |
-| `IPFS`        | IPFS node for file uploading and pinning (defaults to `http://ipfs:5001/api/v0`)  |
-| `ENVIRONMENT` | Environment name (defaults to `development`)                                      |
+| Name          | Description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| `DOMAIN`      | Domain name for caddy, DNS should point at the IP where the code is hosted       |
+| `IPFS`        | IPFS node for file uploading and pinning (defaults to `http://ipfs:5001/api/v0`) |
+| `ENVIRONMENT` | Environment name (defaults to `development`)                                     |
 
 Also, please, consider looking at `.env.sample`.
