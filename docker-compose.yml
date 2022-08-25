@@ -1,6 +1,7 @@
 services:
   # IPFS
   ipfs-development:
+    container_name: ipfs
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
@@ -15,6 +16,7 @@ services:
     profiles:
       - development
   ipfs-production:
+    container_name: ipfs
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
@@ -29,6 +31,7 @@ services:
       - production-no-dns
   # Backend
   backend-development:
+    container_name: obss-backend
     build:
       context: .
       dockerfile: Dockerfile.backend.development
@@ -44,6 +47,7 @@ services:
     profiles:
       - development
   backend-production:
+    container_name: obss-backend
     build:
       context: .
       dockerfile: Dockerfile.backend.production
@@ -57,9 +61,10 @@ services:
       - production-no-dns
   # Reverse proxy
   caddy:
+    container_name: obss-proxy-caddy
     image: caddy:2-alpine
     restart: unless-stopped
-    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend:1337'
+    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://obss-backend:1337'
     ports:
       - 80:80
       - 443:443
@@ -71,9 +76,10 @@ services:
     profiles:
       - production
   localtunnel:
-    image: defunctzombie/localtunnel-server:latest
+    container_name: obss-proxy-lt
+    image: node:18
     restart: unless-stopped
-    command: ['--port', '1337', '--local-host', 'backend']
+    command: 'npx localtunnel --port 1337 --local-host obss-backend'
     depends_on:
       - backend-production
     profiles:
