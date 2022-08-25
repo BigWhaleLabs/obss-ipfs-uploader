@@ -15,6 +15,6 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | Name     | Description                                                                       |
 | -------- | --------------------------------------------------------------------------------- |
 | `DOMAIN` | Domain name for certbot, assumes that the environment is production when provided |
-| `IPFS`   | IPFS node for file uploading and pinning (defaults to `http://ipfs:5001`)         |
+| `IPFS`   | IPFS node for file uploading and pinning (defaults to `http://ipfs:5001/api/v0`)  |
 
 Also, please, consider looking at `.env.sample`.

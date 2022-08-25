@@ -9,6 +9,8 @@ services:
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
+      # Admin panel, shouldn't be exposed to the internet
+      - 127.0.0.1:5001:5001
   backend:
     build:
       context: .
