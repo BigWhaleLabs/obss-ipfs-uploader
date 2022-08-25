@@ -9,5 +9,11 @@ services:
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 1337:1337
 volumes:
   ipfs_data:
