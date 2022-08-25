@@ -1,0 +1,13 @@
+services:
+  ipfs:
+    image: ipfs/kubo:latest
+    restart: unless-stopped
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PATH=/data/ipfs
+    ports:
+      - 4001:4001/tcp
+      - 4001:4001/udp
+volumes:
+  ipfs_data:
