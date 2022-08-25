@@ -55,7 +55,7 @@ services:
     profiles:
       - production
       - production-no-dns
-  # Server
+  # Reverse proxy
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
