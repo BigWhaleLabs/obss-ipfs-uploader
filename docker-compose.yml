@@ -69,6 +69,14 @@ services:
       - backend-production
     profiles:
       - production
+  localtunnel:
+    image: defunctzombie/localtunnel-server:latest
+    restart: unless-stopped
+    command: ['--port', '1337', '--local-host', 'backend']
+    depends_on:
+      - backend-production
+    profiles:
+      - production-no-dns
 
 volumes:
   ipfs_data:
