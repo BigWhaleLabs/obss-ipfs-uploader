@@ -1,5 +1,5 @@
 services:
-  ipfs:
+  ipfs-development:
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
@@ -11,22 +11,54 @@ services:
       - 4001:4001/udp
       # Admin panel, shouldn't be exposed to the internet
       - 127.0.0.1:5001:5001
-  backend:
+    profiles:
+      - development
+  ipfs-production:
+    image: ipfs/kubo:latest
+    restart: unless-stopped
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PATH=/data/ipfs
+    ports:
+      - 4001:4001/tcp
+      - 4001:4001/udp
+    profiles:
+      - production
+      - production-no-dns
+
+  backend-development:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.backend.development
     restart: unless-stopped
     ports:
-      # We shouldn't expose this port to the internet, only via the cuddy reverse proxy
       - 1337:1337
     volumes:
       - ./src:/usr/src
     depends_on:
-      - ipfs
+      - ipfs-development
+    environment:
+      - ENVIRONMENT=development
+    profiles:
+      - development
+  backend-production:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend.production
+    restart: unless-stopped
+    depends_on:
+      - ipfs-production
+    environment:
+      - ENVIRONMENT=production
+    profiles:
+      - production
+      - production-no-dns
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
-    command: 'caddy reverse-proxy --from ${DOMAIN:-localhost} --to http://backend:1337'
+    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend:1337'
     ports:
       - 80:80
       - 443:443
@@ -34,7 +66,10 @@ services:
       - caddy_data:/data
       - caddy_conf:/config
     depends_on:
-      - backend
+      - backend-production
+    profiles:
+      - production
+
 volumes:
   ipfs_data:
   caddy_data:
