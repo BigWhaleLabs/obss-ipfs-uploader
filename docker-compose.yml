@@ -15,8 +15,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    # ports:
-    # - 1337:1337
+    restart: unless-stopped
+    ports:
+      # We shouldn't expose this port to the internet, only via the cuddy reverse proxy
+      - 1337:1337
     volumes:
       - ./src:/usr/src
     depends_on:
