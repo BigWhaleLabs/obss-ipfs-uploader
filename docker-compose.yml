@@ -1,7 +1,6 @@
 services:
   # IPFS
-  ipfs:
-    container_name: ipfs
+  ipfs-development:
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
@@ -12,10 +11,26 @@ services:
       - 4001:4001/tcp
       - 4001:4001/udp
       # Admin panel, shouldn't be exposed to the internet
-      # - 127.0.0.1:5001:5001
+      - 127.0.0.1:5001:5001
+    profiles:
+      - development
+    hostname: ipfs
+  ipfs-production:
+    image: ipfs/kubo:latest
+    restart: unless-stopped
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PATH=/data/ipfs
+    ports:
+      - 4001:4001/tcp
+      - 4001:4001/udp
+    profiles:
+      - production
+      - production-no-dns
+    hostname: ipfs
   # Backend
   backend-development:
-    container_name: backend-development
     build:
       context: .
       dockerfile: Dockerfile.backend.development
@@ -25,30 +40,31 @@ services:
     volumes:
       - ./src:/usr/src
     depends_on:
-      - ipfs
+      - ipfs-development
     environment:
       - ENVIRONMENT=development
     profiles:
       - development
+    hostname: backend
   backend-production:
-    container_name: backend-production
     build:
       context: .
       dockerfile: Dockerfile.backend.production
     restart: unless-stopped
     depends_on:
-      - ipfs
+      - ipfs-production
     environment:
       - ENVIRONMENT=production
     profiles:
       - production
       - production-no-dns
+    hostname: backend
   # Reverse proxy
   caddy:
-    container_name: caddy-proxy
+    container_name: obss-proxy-caddy
     image: caddy:2-alpine
     restart: unless-stopped
-    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend-production:1337'
+    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend:1337'
     ports:
       - 80:80
       - 443:443
@@ -63,7 +79,7 @@ services:
     container_name: obss-proxy-lt
     image: node:18
     restart: unless-stopped
-    command: 'npx localtunnel --port 1337 --local-host backend-production'
+    command: 'npx localtunnel --port 1337 --local-host backend'
     depends_on:
       - backend-production
     profiles:
