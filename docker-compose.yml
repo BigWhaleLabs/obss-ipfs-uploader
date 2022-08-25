@@ -15,9 +15,25 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    ports:
-      - 1337:1337
+    # ports:
+    # - 1337:1337
     volumes:
       - ./src:/usr/src
+    depends_on:
+      - ipfs
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    command: 'caddy reverse-proxy --from ${DOMAIN:-localhost} --to http://backend:1337'
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - caddy_data:/data
+      - caddy_conf:/config
+    depends_on:
+      - backend
 volumes:
   ipfs_data:
+  caddy_data:
+  caddy_conf:
