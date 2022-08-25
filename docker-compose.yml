@@ -15,5 +15,7 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 1337:1337
+    volumes:
+      - ./src:/usr/src
 volumes:
   ipfs_data:
