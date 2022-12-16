@@ -9,5 +9,5 @@ dotenv.config({ path: resolve(cwd(), '.env') })
 export default cleanEnv(process.env, {
   DOMAIN: str({ default: undefined }),
   PORT: num({ default: 1337 }),
-  IPFS: str({ default: 'http://ipfs:5001/api/v0' }),
+  IPFS: str({ default: 'http://127.0.0.1:5001/api/v0' }),
 })
