@@ -1,5 +1,7 @@
-import { Body, Controller, Post } from 'amala'
+import { Body, Controller, Get, Params, Post } from 'amala'
+import { CID } from 'ipfs-http-client'
 import ipfs from '@/helpers/ipfs'
+import readIpfsFile from '@/helpers/readIpfsFile'
 
 @Controller('/file')
 export default class LoginController {
@@ -10,6 +12,16 @@ export default class LoginController {
     await ipfs.pin.add(cid)
     return {
       cid: cid.toString(),
+    }
+  }
+
+  @Get('/:cid')
+  async getAccountByCid(@Params() { cid }: { cid: CID }) {
+    try {
+      const stringFile = await readIpfsFile(ipfs, cid)
+      return JSON.parse(stringFile)
+    } catch (error) {
+      return { error }
     }
   }
 }
