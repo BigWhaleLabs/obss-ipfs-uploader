@@ -1,0 +1,4 @@
+{$DOMAIN} {
+  reverse_proxy backend:1337
+  reverse_proxy /ipfs/* ipfs:8080
+}
