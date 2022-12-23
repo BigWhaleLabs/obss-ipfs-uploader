@@ -10,11 +10,14 @@ services:
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
+      - 8080:8080
       # Admin panel, shouldn't be exposed to the internet
       - 127.0.0.1:5001:5001
     profiles:
       - development
     hostname: ipfs
+    networks:
+      - shared
   ipfs-production:
     image: ipfs/kubo:latest
     restart: unless-stopped
@@ -22,13 +25,19 @@ services:
       - ipfs_data:/data/ipfs
     environment:
       - IPFS_PATH=/data/ipfs
+    expose:
+      # Admin panel, shouldn't be exposed to the internet
+      - '5001'
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
+      - 8080:8080
     profiles:
       - production
       - production-no-dns
     hostname: ipfs
+    networks:
+      - shared
   # Backend
   backend-development:
     build:
@@ -46,6 +55,8 @@ services:
     profiles:
       - development
     hostname: backend
+    networks:
+      - shared
   backend-production:
     build:
       context: .
@@ -59,6 +70,8 @@ services:
       - production
       - production-no-dns
     hostname: backend
+    networks:
+      - shared
   # Reverse proxy
   caddy:
     container_name: obss-proxy-caddy
@@ -89,3 +102,6 @@ volumes:
   ipfs_data:
   caddy_data:
   caddy_conf:
+
+networks:
+  shared:
