@@ -10,9 +10,9 @@ services:
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
-      - 8080:8080
+      - 8080
       # Admin panel, shouldn't be exposed to the internet
-      - 127.0.0.1:5001:5001
+      - 5001:5001
     profiles:
       - development
     hostname: ipfs
@@ -31,7 +31,7 @@ services:
     ports:
       - 4001:4001/tcp
       - 4001:4001/udp
-      - 8080:8080
+      - 8080
     profiles:
       - production
       - production-no-dns
@@ -79,11 +79,13 @@ services:
     container_name: obss-proxy-caddy
     image: caddy:2-alpine
     restart: unless-stopped
-    command: 'caddy reverse-proxy --from ${DOMAIN} --to http://backend:1337'
+    env_file:
+      - .env
     ports:
       - 80:80
       - 443:443
     volumes:
+      - './Caddyfile:/etc/caddy/Caddyfile'
       - caddy_data:/data
       - caddy_conf:/config
     depends_on:
