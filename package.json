@@ -6,10 +6,11 @@
   "repository": "https://github.com/backmeupplz/obss-ipfs-uploader",
   "author": "backmeupplz <backmeupplz@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "prettier": "@big-whale-labs/prettier-config",
   "scripts": {
-    "distribute": "yarn build && node dist/server.js",
-    "start": "tsc-watch --skipLibCheck --onSuccess 'node dist/server.js'",
+    "distribute": "yarn build && node --experimental-modules --es-module-specifier-resolution=node dist/server.js",
+    "start": "tsc-watch --skipLibCheck --onSuccess 'node --experimental-modules --es-module-specifier-resolution=node dist/server.js'",
     "build": "tsc --skipLibCheck",
     "test": "yarn jest --forceExit --runInBand",
     "pretty": "prettier --check src",
@@ -24,10 +25,13 @@
     "amala": "^8.0.2",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
-    "ipfs-http-client": "~56.0.2",
+    "fetch-readablestream": "^0.2.0",
+    "form-data": "^4.0.0",
+    "ipfs-http-client": "^60.0.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^12.0.0"
+    "koa-router": "^12.0.0",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@big-whale-labs/bwl-eslint-backend": "^1.0.4",
