@@ -1,4 +1,3 @@
-import * as FormData from 'form-data'
 import * as fs from 'fs'
 import { Body, Controller, File, Post } from 'amala'
 import ipfs from '../helpers/ipfs'
