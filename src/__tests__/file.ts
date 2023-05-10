@@ -1,7 +1,7 @@
-import * as request from 'supertest'
-import * as shutdown from 'http-graceful-shutdown'
 import { Server } from 'http'
-import runApp from '@/helpers/runApp'
+import request from 'supertest'
+import runApp from '../helpers/runApp'
+import shutdown from 'http-graceful-shutdown'
 
 describe('File endpoint', () => {
   let server: Server

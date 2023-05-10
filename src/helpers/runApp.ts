@@ -1,11 +1,11 @@
-import * as Koa from 'koa'
-import * as Router from 'koa-router'
-import * as bodyParser from 'koa-bodyparser'
-import * as cors from '@koa/cors'
 import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
-import { resolve } from 'path'
-import env from '@/helpers/env'
+import Koa from 'koa'
+import Router from 'koa-router'
+import Upload from '../controllers/file'
+import bodyParser from 'koa-bodyparser'
+import cors from '@koa/cors'
+import env from './env'
 
 const app = new Koa()
 
@@ -14,7 +14,7 @@ export default async function () {
   await bootstrapControllers({
     app,
     basePath: '/',
-    controllers: [resolve(__dirname, '../controllers/*')],
+    controllers: [Upload],
     disableVersioning: true,
     router,
   })
