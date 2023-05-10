@@ -14,7 +14,7 @@ export default class UploadController {
     }
   }
 
-  @Post('/upload')
+  @Post('/image')
   async image(@File() files: Record<string, File>) {
     const file = files.file as File & { path: string }
 
