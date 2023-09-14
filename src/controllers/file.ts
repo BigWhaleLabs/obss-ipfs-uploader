@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { Body, Controller, File, Post } from 'amala'
 import { fileTypeFromBuffer } from 'file-type'
-import { setContentType } from '../helpers/contentTypeCache'
+import { setContentType } from '../helpers/contentTypes'
 import ipfs from '../helpers/ipfs'
 
 @Controller('/file')
@@ -31,7 +31,7 @@ export default class UploadController {
     await ipfs.pin.add(cid)
 
     const contentType = await fileTypeFromBuffer(fileContent)
-    if (contentType) setContentType(cid.toString(), contentType.mime)
+    if (contentType) await setContentType(cid.toString(), contentType.mime)
 
     // Delete the temporary file
     fs.unlinkSync(file.path)

@@ -1,8 +1,8 @@
 import { Context } from 'koa'
 import { Controller, Ctx, Get, Params, Query } from 'amala'
 import { Readable } from 'stream'
-import { getCachedResize, setCachedResize } from '../helpers/resizeCache'
-import { getContentType } from '../helpers/contentTypeCache'
+import { getCachedResize, setCachedResize } from '../helpers/resizedImages'
+import { getContentType } from '../helpers/contentTypes'
 import ipfs, { getDataFromIPFS } from '../helpers/ipfs'
 import sharp from 'sharp'
 
@@ -40,7 +40,7 @@ export default class ResizeController {
     // ...and cache the result
     const { cid: resizedCid } = await ipfs.add(resized)
     await ipfs.pin.add(resizedCid)
-    setCachedResize(cid, height, width, resizedCid.toString())
+    await setCachedResize(cid, height, width, resizedCid.toString())
 
     return Readable.from(resized)
   }
