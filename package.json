@@ -25,10 +25,12 @@
     "amala": "^8.0.2",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
+    "file-type": "^18.5.0",
     "ipfs-http-client": "^60.0.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^12.0.0"
+    "koa-router": "^12.0.0",
+    "sharp": "0.32.5"
   },
   "devDependencies": {
     "@big-whale-labs/bwl-eslint-backend": "^1.0.4",

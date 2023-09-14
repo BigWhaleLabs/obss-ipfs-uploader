@@ -1,6 +1,7 @@
 import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
 import Koa from 'koa'
+import Resize from '../controllers/resize'
 import Router from 'koa-router'
 import Upload from '../controllers/file'
 import bodyParser from 'koa-bodyparser'
@@ -14,7 +15,7 @@ export default async function () {
   await bootstrapControllers({
     app,
     basePath: '/',
-    controllers: [Upload],
+    controllers: [Upload, Resize],
     disableVersioning: true,
     router,
   })
