@@ -11,6 +11,7 @@ export default class UploadController {
     console.log('Uploading file', file)
     const { cid } = await ipfs.add(JSON.stringify(file))
     await ipfs.pin.add(cid)
+    await setContentType(cid.toString(), 'application/json')
     return {
       cid: cid.toString(),
     }

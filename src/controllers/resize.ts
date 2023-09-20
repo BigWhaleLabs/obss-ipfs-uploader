@@ -2,9 +2,9 @@ import { Context } from 'koa'
 import { Controller, Ctx, Get, Params, Query } from 'amala'
 import { IPFS_TIMEOUT } from '../constants'
 import { Readable } from 'stream'
+import { badRequest, internal, notFound } from '@hapi/boom'
 import { getCachedResize, setCachedResize } from '../helpers/resizedImages'
 import { getContentType } from '../helpers/contentTypes'
-import { notFound } from '@hapi/boom'
 import ipfs, { getDataFromIPFS } from '../helpers/ipfs'
 import sharp from 'sharp'
 
@@ -20,6 +20,8 @@ export default class ResizeController {
     try {
       const contentType = await getContentType(cid)
       if (contentType) ctx.set('Content-Type', contentType)
+      if (contentType && !contentType.startsWith('image/'))
+        return ctx.throw(400, badRequest('Not an image'))
 
       // If no width or height is provided, return the original image
       // If the image is a gif, return the original image
@@ -51,9 +53,9 @@ export default class ResizeController {
       return Readable.from(resized)
     } catch (e: unknown) {
       if (e instanceof Error && e.message === "Couldn't get data from IPFS") {
-        ctx.throw(404, notFound())
+        return ctx.throw(404, notFound())
       } else {
-        ctx.throw(500, 'Internal server error')
+        return ctx.throw(500, internal())
       }
     }
   }
