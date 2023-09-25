@@ -50,6 +50,7 @@ services:
       - ./src:/usr/src
     depends_on:
       - ipfs-development
+      - mongo-development
     environment:
       - ENVIRONMENT=development
     profiles:
@@ -64,6 +65,7 @@ services:
     restart: unless-stopped
     depends_on:
       - ipfs-production
+      - mongo-production
     environment:
       - ENVIRONMENT=production
     profiles:
@@ -103,11 +105,42 @@ services:
       - backend-production
     profiles:
       - production-no-dns
+  # MongoDB
+  mongo-development:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: obss-ipfs-uploader
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+    profiles:
+      - development
+    hostname: mongo
+    networks:
+      - shared
+  mongo-production:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: obss-ipfs-uploader
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+    profiles:
+      - production
+      - production-no-dns
+    hostname: mongo
+    networks:
+      - shared
 
 volumes:
   ipfs_data:
   caddy_data:
   caddy_conf:
+  mongo_data:
 
 networks:
   shared:
