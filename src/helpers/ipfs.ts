@@ -12,8 +12,7 @@ export async function getDataFromIPFS(cid: string): Promise<ArrayBuffer> {
       chunks.push(...chunk)
     if (chunks.length === 0) throw new Error("Couldn't get data from IPFS")
     const data = new Uint8Array(chunks.flat())
-    const buffer = data.buffer
-    return buffer
+    return data.buffer
   } catch (e) {
     throw new Error("Couldn't get data from IPFS")
   }

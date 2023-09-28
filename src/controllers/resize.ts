@@ -19,9 +19,10 @@ export default class ResizeController {
   ) {
     try {
       const contentType = await getContentType(cid)
-      if (contentType) ctx.set('Content-Type', contentType)
       if (contentType && !contentType.startsWith('image/'))
         return ctx.throw(400, badRequest('Not an image'))
+
+      if (contentType) ctx.set('Content-Type', contentType)
 
       // If no width or height is provided, return the original image
       // If the image is a gif, return the original image
