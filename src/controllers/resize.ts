@@ -6,7 +6,7 @@ import { badRequest, internal, notFound } from '@hapi/boom'
 import { getCachedResize, setCachedResize } from '../helpers/resizedImageCache'
 import { getContentType } from '../helpers/contentTypes'
 import ipfs, { getDataFromIPFS } from '../helpers/ipfs'
-import sharp from 'sharp'
+import resizeImage from '../helpers/resizeImage'
 
 @Controller('/resize')
 export default class ResizeController {
@@ -38,13 +38,7 @@ export default class ResizeController {
 
       // If not, resize the image
       const original = await getDataFromIPFS(cid)
-      const resizeOptions: sharp.ResizeOptions = {
-        fit: 'cover',
-        withoutEnlargement: true,
-      }
-      if (height) resizeOptions.height = height
-      if (width) resizeOptions.width = width
-      const resized = await sharp(original).resize(resizeOptions).toBuffer()
+      const resized = await resizeImage(original, height, width)
 
       // ...and cache the result
       const { cid: resizedCid } = await ipfs.add(resized)
