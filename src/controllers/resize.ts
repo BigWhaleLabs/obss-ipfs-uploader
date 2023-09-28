@@ -52,6 +52,7 @@ export default class ResizeController {
 
       return Readable.from(resized)
     } catch (e: unknown) {
+      console.error(e)
       if (e instanceof Error && e.message === "Couldn't get data from IPFS") {
         return ctx.throw(404, notFound())
       } else {
