@@ -5,6 +5,7 @@ import { Readable } from 'stream'
 import { badRequest, internal, notFound } from '@hapi/boom'
 import { getCachedResize, setCachedResize } from '../helpers/resizedImageCache'
 import { getContentType } from '../helpers/contentTypes'
+import CIDParam from '../validators/CIDParam'
 import ipfs, { getDataFromIPFS } from '../helpers/ipfs'
 import resizeImage from '../helpers/resizeImage'
 
@@ -13,11 +14,12 @@ export default class ResizeController {
   @Get('/image/:cid')
   async image(
     @Ctx() ctx: Context,
-    @Params('cid') cid: string,
+    @Params() params: CIDParam,
     @Query('width') width?: number,
     @Query('height') height?: number
   ) {
     try {
+      const { cid } = params
       const contentType = await getContentType(cid)
       if (contentType && !contentType.startsWith('image/'))
         return ctx.throw(400, badRequest('Not an image'))
