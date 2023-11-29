@@ -1,5 +1,6 @@
 import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
+import IPFSController from '../controllers/ipfs'
 import Koa from 'koa'
 import Resize from '../controllers/resize'
 import Router from 'koa-router'
@@ -15,7 +16,7 @@ export default async function () {
   await bootstrapControllers({
     app,
     basePath: '/',
-    controllers: [Upload, Resize],
+    controllers: [Upload, Resize, IPFSController],
     disableVersioning: true,
     router,
   })
