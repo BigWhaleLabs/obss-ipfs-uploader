@@ -10,7 +10,7 @@ import ipfs from '../helpers/ipfs'
 @Controller('/ipfs')
 export default class IPFSController {
   @Get('/:cid')
-  async image(@Ctx() ctx: Context, @Params() params: ResizeParams) {
+  async getCID(@Ctx() ctx: Context, @Params() params: ResizeParams) {
     try {
       const { cid } = params
       const contentType = await getContentType(cid)
