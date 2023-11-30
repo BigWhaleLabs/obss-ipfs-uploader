@@ -2,7 +2,7 @@ import FormData from 'form-data'
 import axios, { AxiosError } from 'axios'
 import fs from 'fs'
 
-const OLD_IPFS_NODE = `https://ipfs.sealcred.xyz`
+const OLD_IPFS_NODE = `http://localhost:8080`
 const NEW_IPFS_UPLOADER = `https://ipfs-uploader.ketl.xyz`
 
 async function main() {
@@ -14,6 +14,7 @@ async function main() {
     .split('\n')
   const new_node_pin_set = new Set(new_node_pins)
   const cids = old_node_pins.filter((pin) => !new_node_pin_set.has(pin))
+  console.log(cids)
 
   for (const cid of cids) {
     try {
