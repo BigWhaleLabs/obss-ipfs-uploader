@@ -17,12 +17,14 @@
     "lint": "yarn pretty && eslint --max-warnings 0 ./src/",
     "docker-start-development": "docker-compose --profile=development up",
     "docker-start-production": "docker-compose --profile=production up",
-    "docker-start-production-no-dns": "docker-compose --profile=production-no-dns up"
+    "docker-start-production-no-dns": "docker-compose --profile=production-no-dns up",
+    "transfer-cid": "yarn build && node --experimental-modules --es-module-specifier-resolution=node dist/scripts/transfer-cid.js"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.0",
     "@koa/cors": "^4.0.0",
     "amala": "^8.0.2",
+    "axios": "1.6.2",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
     "file-type": "^18.5.0",
