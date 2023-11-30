@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { Body, Controller, File, Post } from 'amala'
+import { File as AmalaFile, Body, Controller, Post } from 'amala'
 import { fileTypeFromBuffer } from 'file-type'
 import { setContentType } from '../helpers/contentTypes'
 import ipfs from '../helpers/ipfs'
@@ -18,7 +18,7 @@ export default class UploadController {
   }
 
   @Post('/image')
-  async image(@File() files: Record<string, File>) {
+  async image(@AmalaFile() files: Record<string, File>) {
     const file = files.file as File & { path: string }
 
     if (!file || !file.path) {
