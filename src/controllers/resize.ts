@@ -7,6 +7,7 @@ import { getCachedResize, setCachedResize } from '../helpers/resizedImageCache'
 import { getContentType } from '../helpers/contentTypes'
 import ResizeParams from '../validators/ResizeParams'
 import ResizeQueryParams from '../validators/ResizeQueryParams'
+import backupCID from 'helpers/backupCID'
 import ipfs, { getDataFromIPFS } from '../helpers/ipfs'
 import resizeImage from '../helpers/resizeImage'
 
@@ -48,6 +49,7 @@ export default class ResizeController {
       // ...and cache the result
       const { cid: resizedCid } = await ipfs.add(resized)
       await ipfs.pin.add(resizedCid)
+      await backupCID(resizedCid.toString())
       await setCachedResize(cid, height, width, resizedCid.toString())
 
       return Readable.from(resized)

@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { Body, Controller, File, Post } from 'amala'
 import { fileTypeFromBuffer } from 'file-type'
 import { setContentType } from '../helpers/contentTypes'
+import backupCID from 'helpers/backupCID'
 import ipfs from '../helpers/ipfs'
 
 @Controller('/file')
@@ -11,6 +12,7 @@ export default class UploadController {
     console.log('Uploading file', file)
     const { cid } = await ipfs.add(JSON.stringify(file))
     await ipfs.pin.add(cid)
+    await backupCID(cid.toString())
     await setContentType(cid.toString(), 'application/json')
     return {
       cid: cid.toString(),
@@ -30,6 +32,7 @@ export default class UploadController {
     // Add the file to IPFS
     const { cid } = await ipfs.add(fileContent)
     await ipfs.pin.add(cid)
+    await backupCID(cid.toString())
 
     const contentType = await fileTypeFromBuffer(fileContent)
     if (contentType) await setContentType(cid.toString(), contentType.mime)

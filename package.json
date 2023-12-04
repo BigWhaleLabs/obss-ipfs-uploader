@@ -18,7 +18,8 @@
     "docker-start-development": "docker-compose --profile=development up",
     "docker-start-production": "docker-compose --profile=production up",
     "docker-start-production-no-dns": "docker-compose --profile=production-no-dns up",
-    "transfer-cid": "yarn build && node --experimental-modules --es-module-specifier-resolution=node dist/scripts/transfer-cid.js"
+    "transfer-cid": "yarn build && node --experimental-modules --es-module-specifier-resolution=node dist/scripts/transfer-cid.js",
+    "backup-cid": "yarn build && node --experimental-modules --es-module-specifier-resolution=node dist/scripts/backup-cid.js"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.0",
