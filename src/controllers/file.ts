@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import { Body, Controller, File, Post } from 'amala'
 import { fileTypeFromBuffer } from 'file-type'
 import { setContentType } from '../helpers/contentTypes'
-import backupCID from 'helpers/backupCID'
+import backupCID from '../helpers/backupCID'
 import ipfs from '../helpers/ipfs'
 
 @Controller('/file')
