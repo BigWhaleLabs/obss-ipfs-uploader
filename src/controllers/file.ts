@@ -12,7 +12,7 @@ export default class UploadController {
     console.log('Uploading file', file)
     const { cid } = await ipfs.add(JSON.stringify(file))
     await ipfs.pin.add(cid)
-    await backupCID(cid.toString())
+    void backupCID(cid.toString())
     await setContentType(cid.toString(), 'application/json')
     return {
       cid: cid.toString(),
@@ -29,10 +29,11 @@ export default class UploadController {
 
     // Read the file content from the temporary path
     const fileContent = fs.readFileSync(file.path)
+
     // Add the file to IPFS
     const { cid } = await ipfs.add(fileContent)
     await ipfs.pin.add(cid)
-    await backupCID(cid.toString())
+    void backupCID(cid.toString())
 
     const contentType = await fileTypeFromBuffer(fileContent)
     if (contentType) await setContentType(cid.toString(), contentType.mime)

@@ -49,7 +49,7 @@ export default class ResizeController {
       // ...and cache the result
       const { cid: resizedCid } = await ipfs.add(resized)
       await ipfs.pin.add(resizedCid)
-      await backupCID(resizedCid.toString())
+      void backupCID(resizedCid.toString())
       await setCachedResize(cid, height, width, resizedCid.toString())
 
       return Readable.from(resized)
