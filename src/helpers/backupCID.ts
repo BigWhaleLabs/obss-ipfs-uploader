@@ -23,6 +23,6 @@ export default async function backupCID(cid: string) {
       }
     )
   } catch (e) {
-    if (e instanceof AxiosError) console.log(e.message)
+    if (e instanceof AxiosError) console.error(e.message)
   }
 }
