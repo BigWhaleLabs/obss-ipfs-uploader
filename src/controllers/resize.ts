@@ -21,8 +21,8 @@ export default class ResizeController {
   ) {
     try {
       const { cid } = params
-      const height = Number(query.height)
-      const width = Number(query.width)
+      const height = Math.round(Number(query.height))
+      const width = Math.round(Number(query.width))
 
       const contentType = await getContentType(cid)
       if (contentType && !contentType.startsWith('image/'))
